@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Code Reviewer</title>
+</head>
+<body>
+
+<h2>AI Code Reviewer</h2>
+
+<textarea id="code" rows="12" cols="70" placeholder="Paste Python code here"></textarea>
+<br><br>
+
+<button onclick="analyzeCode()">Analyze</button>
+
+<h3>Result:</h3>
+<pre id="result"></pre>
+
+<script>
+async function analyzeCode() {
+
+let code = document.getElementById("code").value;
+
+let response = await fetch("/analyze", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify({code: code})
+});
+
+let data = await response.json();
+
+document.getElementById("result").textContent =
+"Formatted Code:\n" + data.formatted_code +
+"\n\nErrors:\n" + data.errors +
+"\n\nSuggestions:\n" + data.suggestions;
+}
+</script>
+
+</body>
+</html>
